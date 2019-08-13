@@ -1,0 +1,49 @@
+// text-layout
+.text-layout ul, .text-layout ol {
+  list-style: none;
+}
+.text-layout li:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: ".";
+  clear: both;
+  height: 0;
+}
+
+.text-layout li {
+  zoom: 1;
+  margin-bottom: 10px;
+}
+
+.text-layout-title {
+  float: left;
+}
+
+.text-layout-content {
+  overflow: hidden;
+}
+
+.text-layout-title {
+  color: #999;
+}
+
+.text-layout-content {
+  color: #333;
+}
+
+.text-layout-left .text-layout-title {
+  text-align: left;
+  min-width: 100px;
+  _width: 100px;
+}
+
+.text-layout-right .text-layout-title {
+  text-align: right;
+  min-width: 100px;
+  _width: 100px;
+}
+
+.text-layout-min li {
+  margin-bottom: 0;
+}

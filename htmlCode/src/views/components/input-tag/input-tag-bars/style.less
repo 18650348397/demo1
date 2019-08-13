@@ -1,0 +1,76 @@
+@inputtag-border-color: #ddd;
+@inputtag-border-hover-color: #bbb;
+@inputtag-text-color: #777;
+@inputtag-border-radius: 5px;
+@inputtag-input-height: 32px;
+@inputtag-item-bg: #cde69c;
+@inputtag-item-color: #fff;
+
+.vue-input-tag-wrapper {
+    background-color: #fff;
+    border-style: solid;
+    border-color: @inputtag-border-color;
+    border-width: 1px;
+    border-radius: @inputtag-border-radius;
+    overflow: hidden;
+    padding-left: 4px;
+    cursor: text;
+    text-align: left;
+    display: flex;
+    flex-wrap: wrap;
+    &.isfocus, &:hover {
+        border-color: @inputtag-border-hover-color;
+    }
+}
+
+.vue-input-tag-wrapper .input-tag {
+    background-color: @inputtag-item-bg;
+    border-radius: 2px;
+    border: 1px solid @inputtag-item-bg;
+    color: @inputtag-item-color;
+    display: inline-block;
+    font-size: 12px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    margin-right: 4px;
+    padding: 3px;
+    height: @inputtag-input-height - 6;
+    line-height: @inputtag-input-height - 14;
+}
+
+.vue-input-tag-wrapper .input-tag .remove {
+    cursor: pointer;
+    font-weight: bold;
+    color: @inputtag-item-color;
+    margin-left: 5px;
+    &:hover {
+        color: #f00;
+    }
+}
+
+.vue-input-tag-wrapper .input-tag .remove:hover {
+    text-decoration: none;
+}
+
+.vue-input-tag-wrapper .input-tag .remove::before {
+    content: " x";
+}
+
+.vue-input-tag-wrapper .new-tag {
+    background: transparent;
+    border: 0;
+    width: 100px;
+    color: @inputtag-text-color;
+    font-size: 12px;
+    height: @inputtag-input-height - 2;
+    /* margin-bottom: 6px;
+    margin-top: 1px; */
+    outline: none;
+    padding: 4px;
+    padding-left: 0;
+    flex-grow: 1;
+}
+
+.vue-input-tag-wrapper.read-only {
+    cursor: default;
+}

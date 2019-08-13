@@ -1,0 +1,83 @@
+.scrollbar {
+    overflow: hidden;
+    position: relative
+}
+
+.scrollbar:active>.scrollbar__bar,
+.scrollbar:focus>.scrollbar__bar,
+.scrollbar:hover>.scrollbar__bar {
+    opacity: 1;
+    transition: opacity .34s ease-out
+}
+
+.scrollbar__wrap {
+    overflow: scroll;
+    height: 100%;
+}
+
+.scrollbar__wrap:not(.scrollbar__wrap--hidden-default) {
+    padding-bottom: 10px
+}
+
+.scrollbar__wrap--hidden-default::-webkit-scrollbar,
+.scrollbar__wrap::-webkit-scrollbar {
+    width: 0;
+    height: 0
+}
+
+.scrollbar__wrap--hidden-default,
+.scrollbar__wrap {
+    -ms-scroll-chaining: chained;
+    -ms-overflow-style: none;
+    -ms-content-zooming: zoom;
+    -ms-scroll-rails: none;
+    -ms-content-zoom-limit-min: 100%;
+    -ms-content-zoom-limit-max: 500%;
+    -ms-scroll-snap-type: proximity;
+    -ms-scroll-snap-points-x: snapList(100%, 200%, 300%, 400%, 500%);
+    -ms-overflow-style: none;
+    overflow: auto;
+}
+
+.scrollbar__thumb {
+    position: relative;
+    display: block;
+    width: 0;
+    height: 0;
+    cursor: pointer;
+    border-radius: inherit;
+    background-color: hsla(220, 4%, 58%, .3);
+    transition: background-color .3s
+}
+
+.scrollbar__thumb:hover {
+    background-color: hsla(220, 4%, 58%, .5)
+}
+
+.scrollbar__bar {
+    position: absolute;
+    right: 2px;
+    bottom: 2px;
+    z-index: 1;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity .12s ease-out
+}
+
+.scrollbar__bar.is-vertical {
+    width: 6px;
+    top: 2px
+}
+
+.scrollbar__bar.is-vertical>div {
+    width: 100%
+}
+
+.scrollbar__bar.is-horizontal {
+    height: 6px;
+    left: 2px
+}
+
+.scrollbar__bar.is-horizontal>div {
+    height: 100%
+}

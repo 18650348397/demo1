@@ -1,0 +1,68 @@
+@bcolor: #ddd;
+.tb {
+    border-spacing:0;
+    th {
+        padding: 10px 5px;
+        border-top-width: 1px;
+        border-bottom-width: 1px;
+        border-style: solid;
+        border-color: @bcolor;
+        line-height: 20px;
+        color: #000;
+        vertical-align: middle;
+        border-left:none;
+        border-top:none;
+      }
+      td {
+        padding: 10px 5px;
+        line-height: 25px;
+        background-color: #fff;
+        border-bottom: 1px solid @bcolor;
+        word-wrap: break-word;
+        word-break: break-all;
+        vertical-align: middle;
+        
+      }
+}
+.tb-b {
+    border: 1px solid @bcolor;
+}
+
+.tb-b th , .tb-b td {
+    border-color: @bcolor;
+    border-left: 1px solid @bcolor;
+}
+
+.tb-n th , .tb-n td {
+    border: 0;
+    background: none;
+    vertical-align: middle;
+    padding: 10px 5px;
+}
+
+.tb-s {
+    border-left: 1px solid @bcolor;
+    border-top: 1px solid @bcolor;
+}
+  
+.tb-s{
+    td,th{
+        padding: 15px 10px;
+        border-right: 1px solid @bcolor;
+        border-bottom: 1px solid @bcolor;
+    }
+    th {
+        background-color:#fff;
+        border-bottom: 1px solid @bcolor;
+        border-right: 1px solid @bcolor;
+        padding: 15px 10px;
+        width: 120px;
+        font-weight:normal;
+        color: #888;
+      }
+    td {
+        border-bottom: 1px solid @bcolor;
+        border-right: 1px solid @bcolor;
+        padding: 15px 10px;
+    }
+} 

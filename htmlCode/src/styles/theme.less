@@ -1,0 +1,96 @@
+@import '~iview/src/styles/index.less';
+
+@primary-color                : #2d8cf0;                        // 全局 主色 2d8cf0
+
+@sidebar-menu-con             : rgb(73, 80, 96);                // 侧边栏背景色 
+@navicon-btn-color            : @text-color;                      // 侧边栏缩进按钮颜色
+
+@header-bg                    : #fff;                           // 顶部背景色 
+@header-breadcrumb-color      : #999;                           // 顶部面包屑字体颜色
+@header-breadcrumb-a-color    : @text-color;                      // 顶部面包屑链接颜色
+@header-breadcrumb-separator  : #dddee1;                        // 顶部面包屑分隔符颜色
+@header-breadcrumb-last-color : @text-color;                      // 顶部面包屑最后一个文字颜色
+@header-avator-icon-color     : @text-color;                      // 顶部工具ICON颜色
+@header-dropdown-a-color      : @text-color;                      // 顶部个人信息A链接颜色
+
+@tag-active-bg                : @primary-color;                   // 标签当前选中的颜色
+
+@menu-dark-title              : #495060;                        // 导航背景颜色                                        
+@menu-dark-active-bg          : #363e4f;                        // 导航二级每个背景颜色（选中的根据主色）
+@menu-dark-subsidiary-color   : rgba(255,255,255,.7);           // 导航文本颜色 
+@menu-dark-group-title-color  : rgba(255,255,255,.36);
+
+
+//tree-select 
+@import '../views/components/tree-select/tree-select-bars/style.less';
+@treeselect-control-border-color: @border-color-base !important;
+@treeselect-control-border-color-hover: @primary-color !important;
+@treeselect-option-selected-bg: @primary-color !important;
+@treeselect-checkbox-color-highlight: @primary-color !important;
+@treeselect-multi-value-font-color: tint(@primary-color, 100%) !important;
+@treeselect-multi-value-item-bg: tint(@primary-color, 35%) !important;
+@treeselect-control-height: @input-height-base !important;
+
+
+//input-tag
+@import '../views/components/input-tag/input-tag-bars/style.less';
+@inputtag-border-color: @border-color-base !important;
+@inputtag-text-color: @text-color !important;
+@inputtag-border-radius: @border-radius-base !important;
+@inputtag-border-hover-color: tint(@primary-color, 15%) !important;
+@inputtag-item-bg: tint(@primary-color, 35%) !important;
+@inputtag-item-color: tint(@primary-color, 100%) !important;
+
+//input-ip
+@import '../views/components/input-ip/input-ip-bars/style.less';
+@inputip-border-color: @border-color-base !important;
+@inputip-input-color:  @text-color !important;
+@inputip-border-radius: @border-radius-base !important;
+@inputip-border-hover-color: tint(@primary-color, 15%) !important;
+
+
+/* ------------------------------------------ */
+.main{
+    .sidebar-menu-con{
+        background: @sidebar-menu-con; 
+    }
+    &-header{
+        background: @header-bg;
+        box-shadow: 0 2px 1px 1px rgba(100,100,100,.1);
+
+        .ivu-breadcrumb {
+            color: @header-breadcrumb-color;
+            a {
+                color: @header-breadcrumb-a-color;
+                &:hover {
+                    color: tint(@header-breadcrumb-a-color, 20%);
+                }
+            }
+            > span:last-child {
+                color: @header-breadcrumb-last-color;
+            }
+            .ivu-breadcrumb-item-separator {
+                color: @header-breadcrumb-separator;
+            }
+        }
+        .header-avator-con {
+            .ivu-tooltip .ivu-icon, .ivu-dropdown-rel .ivu-icon {
+                color: @header-avator-icon-color;
+            }
+        }
+        .user-dropdown-menu-con {
+           .ivu-dropdown-rel > a > span {
+                color: @header-dropdown-a-color;
+            }
+        }
+    }
+    .navicon-con .ivu-btn-text {
+        color: @navicon-btn-color;
+    }
+    .tags-con  {
+        .ivu-tag-blue .ivu-tag-dot-inner {
+           background: @tag-active-bg;
+        }
+    }
+    
+}

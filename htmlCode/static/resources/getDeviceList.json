@@ -1,0 +1,30 @@
+{
+    "errCode": 0,
+    "msg": "操作成功",
+    "data": {
+        "endRow": 2,
+        "firstPage": 1,
+        "hasNextPage": false,
+        "hasPreviousPage": false,
+        "isFirstPage": true,
+        "isLastPage": true,
+        "lastPage": 1,
+        "list": [{
+            "wordbookName": "I级",
+            "id": "17780286393679872",
+            "seq": "1",
+            "wordbookId": "17778471803551744",
+            "questionDescribe": "This is my brother Or  What are you doing now"
+        }],
+        "navigatePages": 8,
+        "navigatepageNums": [1],
+        "nextPage": 0,
+        "pageNum": 1,
+        "pageSize": 10,
+        "pages": 1,
+        "prePage": 0,
+        "size": 2,
+        "startRow": 1,
+        "total": 2
+    }
+}
