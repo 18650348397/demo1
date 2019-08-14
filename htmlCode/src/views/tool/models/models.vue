@@ -31,8 +31,17 @@
         <FormItem label="名称:" prop="name">
           <Input v-model="formModalValidate.name" placeholder="请输入型号名称" style="width:240px" />
         </FormItem>
-        <FormItem label="类型:" prop="type">
+        <!-- <FormItem label="传感类型:" prop="type">
           <Input v-model="formModalValidate.type" placeholder="请输入型号类型" style="width:240px" />
+        </FormItem> -->
+        <FormItem label="传感类型:" prop="type" :label-width="83">
+          <Select v-model="formModalValidate.type" style="width:200px">
+            <Option value="switchs" key="switchs">开关型传感器</Option>
+            <Option value="numerical" key="numerical">数值型传感器</Option>
+          </Select>
+        </FormItem>
+        <FormItem label="厂家:" prop="factory">
+          <Input v-model="formModalValidate.factory" placeholder="请输入厂家" style="width:240px" />
         </FormItem>
       </Form>
     </Modal>
@@ -53,6 +62,7 @@ export default {
       formModalValidate: {
         name: "",
         type: "",
+        factory: "",
         id: ""
       },
       formModalRule: {
@@ -69,7 +79,14 @@ export default {
             message: "必填",
             trigger: "blur"
           }
-        ]
+        ],
+        factory: [
+          {
+            required: true,
+            message: "必填",
+            trigger: "blur"
+          }
+        ],
       },
       disabledDelBtn: true,
       currentPage: 1,
@@ -87,9 +104,29 @@ export default {
           title: "名称",
           key: "name"
         },
+        // {
+        //   title: "型号",
+        //   key: "type"
+        // },
         {
-          title: "型号",
-          key: "type"
+          title: "传感类型",
+          key: "type",
+          render: (h, { row, column, index }) => {
+            let _val = "";
+            switch (row.type) {
+              case "switchs":
+                _val = "开关型传感器";
+                break;
+              case "numerical":
+                _val = "数值型传感器";
+                break;
+            }
+            return h("span", _val);
+          }
+        },
+        {
+          title: "厂家",
+          key: "factory"
         },
         {
           title: "操作",
@@ -213,6 +250,7 @@ export default {
       this.formModalType = false;
       this.formModalValidate.name = row.name;
       this.formModalValidate.type = row.type;
+      this.formModalValidate.factory = row.factory;
       this.formModalValidate.id = row.id;
     },
     formModalOK() {
@@ -231,7 +269,8 @@ export default {
               method: _method,
               data: {
                 name: this.formModalValidate.name,
-                type: this.formModalValidate.type
+                type: this.formModalValidate.type,
+                factory: this.formModalValidate.factory
               }
             },
             data => {
