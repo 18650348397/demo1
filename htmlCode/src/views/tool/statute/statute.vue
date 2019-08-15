@@ -2,7 +2,7 @@
   <div>
     <Card>
       <!-- <Table border :columns="tableColumns" :data="tableData" stripe></Table>
-      <Spin size="large" fix v-if="loading"></Spin> -->
+      <Spin size="large" fix v-if="loading"></Spin>-->
       <Form ref="formSearch" label-position="left" :model="formSearch" :label-width="40" inline>
         <FormItem label="名称:" prop="name">
           <Input v-model="formSearch.name" placeholder="请输入名称关键词" />
@@ -14,12 +14,24 @@
           </ButtonGroup>
           <ButtonGroup class="padding-left-10">
             <Button type="info" @click="handleNewAdd" icon="ios-plus-outline">新增</Button>
-            <Button type="error" @click="handleDelete" :disabled="disabledDelBtn" icon="ios-trash-outline">删除</Button>
+            <Button
+              type="error"
+              @click="handleDelete"
+              :disabled="disabledDelBtn"
+              icon="ios-trash-outline"
+            >删除</Button>
           </ButtonGroup>
         </div>
       </Form>
 
-      <Table border :columns="tableColumns" :data="tableData" @on-selection-change="selectTableItem" stripe></Table>
+      <Table
+        border
+        :columns="tableColumns"
+        :data="tableData"
+        @on-selection-change="selectTableItem"
+        @on-select="selectTableItem"
+        stripe
+      ></Table>
       <div class="clearfix" style="margin-top: 10px;">
         <div class="fr">
           <Page :total="total" :current="currentPage" show-elevator @on-change="handlePageClick"></Page>
@@ -28,14 +40,26 @@
       <Spin size="large" fix v-if="loading"></Spin>
     </Card>
 
-    <Modal v-model="formModal" title="规约" width=350 :loading="formModalLoading" @on-ok="formModalOK" @on-cancel="formModalCancel">
-      <Form ref="formModalValidate" :model="formModalValidate" :rules="formModalRule" :label-width="60">
+    <Modal
+      v-model="formModal"
+      title="规约"
+      width="350"
+      :loading="formModalLoading"
+      @on-ok="formModalOK"
+      @on-cancel="formModalCancel"
+    >
+      <Form
+        ref="formModalValidate"
+        :model="formModalValidate"
+        :rules="formModalRule"
+        :label-width="60"
+      >
         <FormItem label="规约名称:" prop="name">
           <Input v-model="formModalValidate.name" placeholder="请输入规约名称" style="width:240px" />
         </FormItem>
         <!-- <FormItem label="规约ID:" prop="id">
           <Input v-model="formModalValidate.type" placeholder="请输入规约ID" style="width:240px" />
-        </FormItem> -->
+        </FormItem>-->
       </Form>
     </Modal>
   </div>
@@ -63,7 +87,7 @@ export default {
             message: "必填",
             trigger: "blur"
           }
-        ],
+        ]
         // id: [
         //   {
         //     required: true,
@@ -98,7 +122,11 @@ export default {
                     type="ghost"
                     icon="edit"
                     onClick={() => {
-                      this.handleEidtTableItem(row);
+                      if (row.name == "b" || row.name == "104") {
+                        this.$Message.info("该条规约不可操作");
+                      } else {
+                        this.handleEidtTableItem(row);
+                      }
                     }}
                   />
                 </ButtonGroup>
@@ -122,10 +150,24 @@ export default {
   computed: {},
   watch: {},
   methods: {
+    // selectTableItem(selection) {
+    //   if (selection.length) {
+    //     this.disabledDelBtn = false;
+    //     this.selectTableSelection = selection;
+    //   } else {
+    //     this.disabledDelBtn = true;
+    //     this.selectTableSelection = null;
+    //   }
+    // },
     selectTableItem(selection) {
       if (selection.length) {
-        this.disabledDelBtn = false;
-        this.selectTableSelection = selection;
+        if (selection[0].name == "b" || selection[0].name == "104") {
+          this.$Message.info("该条规约不可删除");
+          this.disabledDelBtn = true;
+        } else {
+          this.disabledDelBtn = false;
+          this.selectTableSelection = selection;
+        }
       } else {
         this.disabledDelBtn = true;
         this.selectTableSelection = null;
@@ -226,7 +268,7 @@ export default {
               url: _url,
               method: _method,
               data: {
-                name: this.formModalValidate.name,
+                name: this.formModalValidate.name
               }
             },
             data => {
