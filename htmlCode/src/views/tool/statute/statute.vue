@@ -76,6 +76,11 @@ export default {
       loading: false,
       formModal: false,
       formModalLoading: true,
+      disabledDelBtn: true,
+      currentPage: 1,
+      total: 1,
+      pageSize: "10",
+      currlocal: 1,
       formModalValidate: {
         name: "",
         id: ""
@@ -139,9 +144,6 @@ export default {
       formSearch: {
         name: ""
       },
-      disabledDelBtn: true,
-      currentPage: 1,
-      total: 1
     };
   },
   mounted() {
@@ -178,7 +180,7 @@ export default {
       util.axiosAjax(
         this,
         {
-          url: util.ajaxUrl + "/api/protocol",
+          url: util.ajaxUrl + "/api/protocol/",
           params: {
             name: this.formSearch.name,
             page: pgNum,
@@ -191,7 +193,7 @@ export default {
             this.tableDataGet(data.data.data.pageNum - 1);
           } else {
             this.tableData = data.data.data.list;
-            this.currentPage = data.data.data.pageNum;
+            this.currentPage = data.data.data.pageNum+1;
             this.currlocal = data.data.data.pageNum;
             this.total = data.data.data.total;
             this.pageSize = data.data.data.pageSize;
@@ -257,7 +259,7 @@ export default {
       this.$refs["formModalValidate"].validate(valid => {
         if (valid) {
           let _method = "post";
-          let _url = util.ajaxUrl + "/api/protocol";
+          let _url = util.ajaxUrl + "/api/protocol/";
           if (!this.formModalType) {
             _method = "put";
             _url += "/" + this.formModalValidate.id;

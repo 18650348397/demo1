@@ -101,7 +101,7 @@ export default {
           align: "center"
         },
         {
-          title: "名称",
+          title: "型号名称",
           key: "name"
         },
         // {
@@ -176,7 +176,7 @@ export default {
       util.axiosAjax(
         this,
         {
-          url: util.ajaxUrl + "/api/sensorType",
+          url: util.ajaxUrl + "/api/sensorType/",
           params: {
             name: this.formSearch.name,
             page: pgNum,
@@ -184,6 +184,7 @@ export default {
           }
         },
         data => {
+          console.log(data)
           this.loading = false;
           if (data.data.data.list.length == 0 && data.data.data.pageNum > 1) {
             this.tableDataGet(data.data.data.pageNum - 1);
@@ -246,6 +247,7 @@ export default {
       this.tableDataGet(clickPageNum);
     },
     handleEidtTableItem(row) {
+      console.log(row)
       this.formModal = true;
       this.formModalType = false;
       this.formModalValidate.name = row.name;
@@ -257,7 +259,7 @@ export default {
       this.$refs["formModalValidate"].validate(valid => {
         if (valid) {
           let _method = "post";
-          let _url = util.ajaxUrl + "/api/sensorType";
+          let _url = util.ajaxUrl + "/api/sensorType/";
           if (!this.formModalType) {
             _method = "put";
             _url += "/" + this.formModalValidate.id;

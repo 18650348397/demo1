@@ -1,55 +1,55 @@
 <template>
-  <Card>
-    <Form ref="formSearch" label-position="left" :model="formSearch" :label-width="40" inline>
-      <FormItem label="名称:" prop="name">
-        <Input v-model="formSearch.name" placeholder="请输入名称关键词" />
-      </FormItem>
-      <div style="display: inline">
-        <ButtonGroup class="margin-right-10">
-          <Button type="ghost" icon="ios-search" @click="handleSearch">搜索</Button>
-          <Button type="ghost" icon="ios-loop" @click="handleReset">重置</Button>
-        </ButtonGroup>
-        <ButtonGroup class="padding-left-10">
-          <Button type="info" @click="handleNewAdd" icon="ios-plus-outline">新增</Button>
-          <Button
-            type="error"
-            @click="handleDelete"
-            :disabled="disabledDelBtn"
-            icon="ios-trash-outline"
-          >删除</Button>
-        </ButtonGroup>
-      </div>
-    </Form>
+  <div>
+    <Card>
+      <Form ref="formSearch" label-position="left" :model="formSearch" :label-width="40" inline>
+        <FormItem label="名称:" prop="name">
+          <Input v-model="formSearch.name" placeholder="请输入名称关键词" />
+        </FormItem>
+        <div style="display: inline">
+          <ButtonGroup class="margin-right-10">
+            <Button type="ghost" icon="ios-search" @click="handleSearch">搜索</Button>
+            <Button type="ghost" icon="ios-loop" @click="handleReset">重置</Button>
+          </ButtonGroup>
+          <ButtonGroup class="padding-left-10">
+            <Button type="info" @click="handleNewAdd" icon="ios-plus-outline">新增</Button>
+            <Button
+              type="error"
+              @click="handleDelete"
+              :disabled="disabledDelBtn"
+              icon="ios-trash-outline"
+            >删除</Button>
+          </ButtonGroup>
+        </div>
+      </Form>
 
-    <Table
-      border
-      :columns="tableColumns"
-      :data="tableData"
-      @on-selection-change="selectTableItem"
-      stripe
-    ></Table>
-    <div class="clearfix" style="margin-top: 10px;">
-      <div class="fr">
-        <Page :total="total" :current="currentPage" show-elevator @on-change="handlePageClick"></Page>
+      <Table
+        border
+        :columns="tableColumns"
+        :data="tableData"
+        @on-selection-change="selectTableItem"
+        stripe
+      ></Table>
+      <div class="clearfix" style="margin-top: 10px;">
+        <div class="fr">
+          <Page :total="total" :current="currentPage" show-elevator @on-change="handlePageClick"></Page>
+        </div>
       </div>
-    </div>
-    <Spin size="large" fix v-if="loading"></Spin>
-
+      <Spin size="large" fix v-if="loading"></Spin>
+    </Card>
     <Modal
       v-model="formModal"
-      title="型号"
+      title="串口"
       width="350"
       :loading="formModalLoading"
       @on-ok="formModalOK('formValidate')"
       @on-cancel="formModalCancel"
     >
       <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
-        <FormItem label="串口:">
+        <FormItem label="串口:" prop="name">
           <Select
             v-model="formValidate.name"
             placeholder="请选择串口"
             style="width:200px"
-            @on-change="handleChange"
           >
             <Option value="COM1">COM1</Option>
             <Option value="COM2">COM2</Option>
@@ -113,7 +113,7 @@
         </FormItem>-->
       </Form>
     </Modal>
-  </Card>
+  </div>  
 </template>
 
 <script>
@@ -129,12 +129,6 @@ export default {
       },
       formModal: false,
       formModalLoading: true,
-      // formModalValidate: {
-      //   name: "",
-      //   type: "",
-      //   factory: "",
-      //   id: ""
-      // },
       formModalRule: {
         name: [
           {
@@ -143,14 +137,35 @@ export default {
             trigger: "blur"
           }
         ],
-        type: [
+        baudRate: [
           {
             required: true,
             message: "必填",
             trigger: "blur"
           }
         ],
-        factory: [
+        dataBits: [
+          {
+            required: true,
+            message: "必填",
+            trigger: "blur"
+          }
+        ],
+        parity: [
+          {
+            required: true,
+            message: "必填",
+            trigger: "blur"
+          }
+        ],
+        stopBit: [
+          {
+            required: true,
+            message: "必填",
+            trigger: "blur"
+          }
+        ],
+        protocol: [
           {
             required: true,
             message: "必填",
@@ -165,7 +180,7 @@ export default {
           align: "center"
         },
         {
-          title: "名称",
+          title: "串口名称",
           key: "name"
         },
         {
@@ -191,6 +206,26 @@ export default {
         {
           title: "端口启用",
           key: "enable"
+        },
+        {
+          title: "操作",
+          width: 100,
+          align: "center",
+          render: (h, { row, column, index }) => {
+            return (
+              <div>
+                <ButtonGroup size="small">
+                  <Button
+                    type="ghost"
+                    icon="edit"
+                    onClick={() => {
+                      this.handleEidtTableItem(row);
+                    }}
+                  />
+                </ButtonGroup>
+              </div>
+            );
+          }
         }
       ],
       disabledDelBtn: true,
@@ -199,13 +234,14 @@ export default {
       currentPage: 1,
       loading: false,
       formValidate: {
-        name: "COM1",
+        name: "",
         baudRate: "",
         dataBits: "",
         parity: "",
         stopBit: "",
         protocol: "",
-        enable: true
+        enable: true,
+        id:""
       },
       ruleValidate: {
         baudRate: [
@@ -232,21 +268,6 @@ export default {
   computed: {},
   watch: {},
   methods: {
-    formModalOK(name) {
-      this.$refs[name].validate(valid => {
-        if (valid) {
-          this.postPortData();
-        }
-      });
-    },
-    handlePageClick(clickPageNum) {
-      //分页
-      if (this.loading) {
-        return false;
-      }
-      this.currlocal = clickPageNum;
-      this.tableDataGet(clickPageNum);
-    },
     tableDataGet(pgNum) {
       this.loading = true;
       util.axiosAjax(
@@ -275,6 +296,77 @@ export default {
           this.loading = false;
         }
       );
+    },
+    // formModalOK(name) {
+    //   this.$refs[name].validate(valid => {
+    //     if (valid) {
+    //       this.postPortData();
+    //     }
+    //   });
+    // },
+    formModalOK() {
+      this.$refs["formValidate"].validate(valid => {
+        if (valid) {
+          let _method = "post";
+          let _url = util.ajaxUrl + "/api/port/";
+          if (!this.formModalType) {
+            _method = "put";
+            _url += "/" + this.formValidate.id;
+          }
+          util.axiosAjax(
+            this,
+            {
+              url: _url,
+              method: _method,
+              data: {
+                name: this.formValidate.name,
+                baudRate: this.formValidate.baudRate,
+                dataBits: this.formValidate.dataBits,
+                parity: this.formValidate.parity,
+                stopBit: this.formValidate.stopBit,
+                protocol: this.formValidate.protocol,
+                enable: this.formValidate.enable ? 1 : 0
+              }
+            },
+            data => {
+              this.formModal = false;
+              if (this.formModalType) {
+                this.tableDataGet(1);
+              } else {
+                this.tableDataGet(this.currentPage);
+              }
+
+              this.$refs["formValidate"].resetFields();
+            },
+            error => {
+              util.domReset(this, "formModalLoading");
+            }
+          );
+        } else {
+          util.domReset(this, "formModalLoading");
+        }
+      });
+    },
+    handlePageClick(clickPageNum) {
+      //分页
+      if (this.loading) {
+        return false;
+      }
+      this.currlocal = clickPageNum;
+      this.tableDataGet(clickPageNum);
+    },
+    handleEidtTableItem(row) {
+      this.formModal = true;
+      this.formModalType = false;
+      this.formValidate.name = row.name;
+      this.formValidate.baudRate = row.baudRate;
+      this.formValidate.dataBits = row.dataBits;
+      this.formValidate.parity = row.parity;
+      this.formValidate.stopBit = row.stopBit;
+      this.formValidate.protocol = row.protocol;
+      this.formValidate.enable = row.enable;
+      this.formValidate.id = row.id;
+
     },
     handleReset() {
       this.$refs["formSearch"].resetFields();
@@ -325,9 +417,9 @@ export default {
     formModalCancel() {
       this.$refs["formValidate"].resetFields();
     },
-    handleChange() {
-      this.getPortData();
-    },
+    // handleChange() {
+    //   this.getPortData();
+    // },
     // handleSubmit(name) {
     //   this.$refs[name].validate((valid) => {
     //     if (valid) {
@@ -335,54 +427,54 @@ export default {
     //     }
     //   })
     // },
-    getPortData() {
-      this.loading = true;
-      util.axiosAjax(
-        this,
-        {
-          url: util.ajaxUrl + "/api/port/" + this.formValidate.name
-        },
-        data => {
-          this.loading = false;
-          let _data = data.data.data;
-          this.formValidate.baudRate = _data.baudRate;
-          this.formValidate.dataBits = _data.dataBits;
-          this.formValidate.parity = _data.parity;
-          this.formValidate.stopBit = _data.stopBit;
-          this.formValidate.protocol = _data.protocol;
-          this.formValidate.enable = _data.enable == 1 ? true : false;
-        },
-        error => {
-          this.loading = false;
-          this.$refs.formValidate.resetFields();
-        }
-      );
-    },
-    postPortData() {
-      this.loading = true;
-      util.axiosAjax(
-        this,
-        {
-          url: util.ajaxUrl + "/api/port/",
-          method: "post",
-          data: {
-            name: this.formValidate.name,
-            baudRate: this.formValidate.baudRate,
-            dataBits: this.formValidate.dataBits,
-            parity: this.formValidate.parity,
-            stopBit: this.formValidate.stopBit,
-            protocol: this.formValidate.protocol,
-            enable: this.formValidate.enable ? 1 : 0
-          }
-        },
-        data => {
-          this.loading = false;
-        },
-        error => {
-          this.loading = false;
-        }
-      );
-    }
+    // getPortData() {
+    //   this.loading = true;
+    //   util.axiosAjax(
+    //     this,
+    //     {
+    //       url: util.ajaxUrl + "/api/port/" + this.formValidate.name
+    //     },
+    //     data => {
+    //       this.loading = false;
+    //       let _data = data.data.data;
+    //       this.formValidate.baudRate = _data.baudRate;
+    //       this.formValidate.dataBits = _data.dataBits;
+    //       this.formValidate.parity = _data.parity;
+    //       this.formValidate.stopBit = _data.stopBit;
+    //       this.formValidate.protocol = _data.protocol;
+    //       this.formValidate.enable = _data.enable == 1 ? true : false;
+    //     },
+    //     error => {
+    //       this.loading = false;
+    //       this.$refs.formValidate.resetFields();
+    //     }
+    //   );
+    // },
+    // postPortData() {
+    //   this.loading = true;
+    //   util.axiosAjax(
+    //     this,
+    //     {
+    //       url: util.ajaxUrl + "/api/port/",
+    //       method: "post",
+    //       data: {
+    //         name: this.formValidate.name,
+    //         baudRate: this.formValidate.baudRate,
+    //         dataBits: this.formValidate.dataBits,
+    //         parity: this.formValidate.parity,
+    //         stopBit: this.formValidate.stopBit,
+    //         protocol: this.formValidate.protocol,
+    //         enable: this.formValidate.enable ? 1 : 0
+    //       }
+    //     },
+    //     data => {
+    //       this.loading = false;
+    //     },
+    //     error => {
+    //       this.loading = false;
+    //     }
+    //   );
+    // }
   }
 };
 </script>
