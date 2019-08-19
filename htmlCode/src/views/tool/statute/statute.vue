@@ -57,6 +57,17 @@
         <FormItem label="规约名称:" prop="name">
           <Input v-model="formModalValidate.name" placeholder="请输入规约名称" style="width:240px" />
         </FormItem>
+        <FormItem label="规约协议编号:" prop="protocolid" :label-width="83">
+          <Select v-model="formModalValidate.protocolid" style="width:200px">
+            <Option value="3" key="3">3</Option>
+            <Option value="4" key="4">4</Option>
+            <Option value="5" key="5">5</Option>
+            <Option value="6" key="6">6</Option>
+            <Option value="7" key="7">7</Option>
+            <Option value="8" key="8">8</Option>
+            <Option value="9" key="9">9</Option>
+          </Select>
+        </FormItem>
         <!-- <FormItem label="规约ID:" prop="id">
           <Input v-model="formModalValidate.type" placeholder="请输入规约ID" style="width:240px" />
         </FormItem>-->
@@ -83,6 +94,7 @@ export default {
       currlocal: 1,
       formModalValidate: {
         name: "",
+        protocolid: "",
         id: ""
       },
       formModalRule: {
@@ -92,7 +104,14 @@ export default {
             message: "必填",
             trigger: "blur"
           }
-        ]
+        ],
+        protocolid: [
+          {
+            required: true,
+            message: "必填",
+            trigger: "blur"
+          }
+        ],
         // id: [
         //   {
         //     required: true,
@@ -112,9 +131,13 @@ export default {
           key: "name"
         },
         {
-          title: "规约ID",
-          key: "id"
+          title: "规约协议编号",
+          key: "protocolid",
         },
+        // {
+        //   title: "规约ID",
+        //   key: "id"
+        // },
         {
           title: "操作",
           width: 100,
@@ -193,7 +216,7 @@ export default {
             this.tableDataGet(data.data.data.pageNum - 1);
           } else {
             this.tableData = data.data.data.list;
-            this.currentPage = data.data.data.pageNum+1;
+            this.currentPage = data.data.data.pageNum;
             this.currlocal = data.data.data.pageNum;
             this.total = data.data.data.total;
             this.pageSize = data.data.data.pageSize;
@@ -253,6 +276,7 @@ export default {
       this.formModal = true;
       this.formModalType = false;
       this.formModalValidate.name = row.name;
+      this.formModalValidate.protocolid = row.protocolid.toString();
       this.formModalValidate.id = row.id;
     },
     formModalOK() {
@@ -270,7 +294,8 @@ export default {
               url: _url,
               method: _method,
               data: {
-                name: this.formModalValidate.name
+                name: this.formModalValidate.name,
+                protocolid: this.formModalValidate.protocolid
               }
             },
             data => {

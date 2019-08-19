@@ -96,12 +96,12 @@
             <Option value="2">2</Option>
           </Select>
         </FormItem>
-        <FormItem label="通信协议:" prop="protocol">
+        <!-- <FormItem label="通信协议:" prop="protocol">
           <Select v-model="formValidate.protocol" placeholder="请选择通信协议" style="width:200px">
             <Option value="modbus">modbus</Option>
             <Option value="1393">1393</Option>
           </Select>
-        </FormItem>
+        </FormItem> -->
         <FormItem label="端口启用:" prop="enable">
           <i-switch v-model="formValidate.enable" size="large">
             <span slot="open">开启</span>
@@ -165,13 +165,13 @@ export default {
             trigger: "blur"
           }
         ],
-        protocol: [
-          {
-            required: true,
-            message: "必填",
-            trigger: "blur"
-          }
-        ]
+        // protocol: [
+        //   {
+        //     required: true,
+        //     message: "必填",
+        //     trigger: "blur"
+        //   }
+        // ]
       },
       tableColumns: [
         {
@@ -199,10 +199,10 @@ export default {
           title: "停止位",
           key: "stopBit"
         },
-        {
-          title: "通信协议",
-          key: "protocol"
-        },
+        // {
+        //   title: "通信协议",
+        //   key: "protocol"
+        // },
         {
           title: "端口启用",
           key: "enable"
@@ -239,7 +239,7 @@ export default {
         dataBits: "",
         parity: "",
         stopBit: "",
-        protocol: "",
+        // protocol: "",
         enable: true,
         id:""
       },
@@ -256,14 +256,15 @@ export default {
         stopBit: [
           { required: true, message: "此项不能为空，请选择", trigger: "change" }
         ],
-        protocol: [
-          { required: true, message: "此项不能为空，请选择", trigger: "change" }
-        ]
+        // protocol: [
+        //   { required: true, message: "此项不能为空，请选择", trigger: "change" }
+        // ]
       }
     };
   },
   mounted() {
     this.tableDataGet(this.currentPage);
+   
   },
   computed: {},
   watch: {},
@@ -324,7 +325,8 @@ export default {
                 dataBits: this.formValidate.dataBits,
                 parity: this.formValidate.parity,
                 stopBit: this.formValidate.stopBit,
-                protocol: this.formValidate.protocol,
+                id: this.formValidate.id,
+                // protocol: this.formValidate.protocol,
                 enable: this.formValidate.enable ? 1 : 0
               }
             },
@@ -359,11 +361,11 @@ export default {
       this.formModal = true;
       this.formModalType = false;
       this.formValidate.name = row.name;
-      this.formValidate.baudRate = row.baudRate;
-      this.formValidate.dataBits = row.dataBits;
+      this.formValidate.baudRate = row.baudRate.toString();
+      this.formValidate.dataBits = row.dataBits.toString();
       this.formValidate.parity = row.parity;
-      this.formValidate.stopBit = row.stopBit;
-      this.formValidate.protocol = row.protocol;
+      this.formValidate.stopBit = row.stopBit.toString();
+      // this.formValidate.protocol = row.protocol;
       this.formValidate.enable = row.enable;
       this.formValidate.id = row.id;
 

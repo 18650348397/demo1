@@ -40,6 +40,11 @@
             <Option value="numerical" key="numerical">数值型传感器</Option>
           </Select>
         </FormItem>
+        <FormItem label="传感协议:" prop="senprotocol" :label-width="83">
+          <Select v-model="formModalValidate.senprotocol" style="width:200px">
+            <Option value="modBus" key="modBus">modBus</Option>
+          </Select>
+        </FormItem>
         <FormItem label="厂家:" prop="factory">
           <Input v-model="formModalValidate.factory" placeholder="请输入厂家" style="width:240px" />
         </FormItem>
@@ -63,6 +68,7 @@ export default {
         name: "",
         type: "",
         factory: "",
+        senprotocol: "modBus",
         id: ""
       },
       formModalRule: {
@@ -74,6 +80,13 @@ export default {
           }
         ],
         type: [
+          {
+            required: true,
+            message: "必填",
+            trigger: "blur"
+          }
+        ],
+        senprotocol: [
           {
             required: true,
             message: "必填",
@@ -119,6 +132,19 @@ export default {
                 break;
               case "numerical":
                 _val = "数值型传感器";
+                break;
+            }
+            return h("span", _val);
+          }
+        },
+        {
+          title: "传感协议",
+          key: "senprotocol",
+          render: (h, { row, column, index }) => {
+            let _val = "";
+            switch (row.senprotocol) {
+              case "modBus":
+                _val = "modBus";
                 break;
             }
             return h("span", _val);
@@ -184,7 +210,6 @@ export default {
           }
         },
         data => {
-          console.log(data)
           this.loading = false;
           if (data.data.data.list.length == 0 && data.data.data.pageNum > 1) {
             this.tableDataGet(data.data.data.pageNum - 1);
@@ -247,11 +272,11 @@ export default {
       this.tableDataGet(clickPageNum);
     },
     handleEidtTableItem(row) {
-      console.log(row)
       this.formModal = true;
       this.formModalType = false;
       this.formModalValidate.name = row.name;
       this.formModalValidate.type = row.type;
+      this.formModalValidate.senprotocol = row.senprotocol;
       this.formModalValidate.factory = row.factory;
       this.formModalValidate.id = row.id;
     },
@@ -272,6 +297,7 @@ export default {
               data: {
                 name: this.formModalValidate.name,
                 type: this.formModalValidate.type,
+                senprotocol: this.formModalValidate.senprotocol,
                 factory: this.formModalValidate.factory
               }
             },

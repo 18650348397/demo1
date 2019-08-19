@@ -34,11 +34,11 @@
           </Col>
           <Col span="12">
           <div>
-            <!-- <FormItem label="协议" prop="protocol_id">
-              <Select v-model="formModalValidate.protocol_id">
-                <Option v-for="item in statuteData" :value="item.id" :key="item.id">{{ item.name }}</Option>
+            <FormItem label="通信协议" prop="protocolName">
+              <Select v-model="formModalValidate.protocolName">
+                <Option v-for="item in statuteData" :value="item.name" :key="item.id">{{ item.name }}</Option>
               </Select>
-            </FormItem> -->
+            </FormItem>
             <FormItem label="端口" prop="port">
               <!-- <InputNumber :min="1" v-model="formModalValidate.port"></InputNumber> -->
               <Input v-model="formModalValidate.port" />
@@ -102,12 +102,13 @@ export default {
           title: "IP地址",
           key: "address"
         },
-        // {
-        //   title: "协议",
-        //   render: (h, { row, column, index }) => {
-        //     return h("span", row.protocol.name);
-        //   }
-        // },
+        {
+          title: "通信协议",
+          key: "protocolName",
+          render: (h, { row, column, index }) => {
+            return h("span", row.protocolName);
+          }
+        },
         // {
         //   title: "启用",
         //   width: 65,
@@ -139,10 +140,10 @@ export default {
       ],
       tableData: [],
       formModalValidate: {
-        // protocol_id: "",
+        protocolName: "",
         fsuid: "",
         address: "",
-        port: 1,
+        port: "",
         name: "",
         pwd: "",
         // enable: "1",
@@ -184,6 +185,13 @@ export default {
             trigger: "blur"
           }
         ],
+        protocolName: [
+          {
+            required: true,
+            message: "必填",
+            trigger: "blur"
+          }
+        ],
         // port: [
         //   {
         //     required: true,
@@ -198,26 +206,27 @@ export default {
     };
   },
   mounted() {
-    this.tableDataGet(this.currentPage);
+    this.getStatuteData();
+    // this.tableDataGet(this.currentPage);
   },
   methods: {
-    // getStatuteData() {
-    //   this.loading = true;
-    //   util.axiosAjax(
-    //     this,
-    //     {
-    //       url: util.ajaxUrl + "/api/protocol"
-    //     },
-    //     data => {
-    //       this.loading = false;
-    //       this.statuteData = data.data.data.list;
-    //       this.tableDataGet(this.currentPage);
-    //     },
-    //     error => {
-    //       this.loading = false;
-    //     }
-    //   );
-    // },
+    getStatuteData() {
+      this.loading = true;
+      util.axiosAjax(
+        this,
+        {
+          url: util.ajaxUrl + "/api/protocol"
+        },
+        data => {
+          this.loading = false;
+          this.statuteData = data.data.data.list;
+          this.tableDataGet(this.currentPage);
+        },
+        error => {
+          this.loading = false;
+        }
+      );
+    },
     selectTableItem(selection) {
       if (selection.length) {
         this.disabledDelBtn = false;
@@ -289,7 +298,7 @@ export default {
       this.formModal = true;
       this.formModalType = false;
       this.formModalValidate.id = row.id;
-      // this.formModalValidate.protocol_id = row.protocol.id;
+      this.formModalValidate.protocolName = row.protocolName;
       this.formModalValidate.fsuid = row.fsuid;
       this.formModalValidate.address = row.address;
       this.formModalValidate.port = row.port * 1;
@@ -321,7 +330,7 @@ export default {
               method: _method,
               data: {
                 // enable: this.formModalValidate.enable == "1" ? true : false,
-                // protocol_id: this.formModalValidate.protocol_id,
+                protocolName: this.formModalValidate.protocolName,
                 fsuid: this.formModalValidate.fsuid,
                 address: this.formModalValidate.address,
                 port: this.formModalValidate.port,
